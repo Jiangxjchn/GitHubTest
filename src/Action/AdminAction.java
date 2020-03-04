@@ -41,7 +41,7 @@ public class AdminAction extends ActionSupport  {
 //            return "success" ;
 //        }
 //        else return "fail" ;
-        System.out.println("");
+
         session.put("staff",staff) ;
         adminService.login(staff);
         session.put("dish",adminService.findMenu()) ;
