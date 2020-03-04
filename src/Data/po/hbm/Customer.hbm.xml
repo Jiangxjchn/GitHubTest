@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="Data.po.User.Customer" table="Customer" schema="dbo" catalog="restaurant"
+           polymorphism="explicit">
+        <id name="account">
+            <column name="account" sql-type="varchar(20)" length="20"/>
+        </id>
+        <property name="password">
+            <column name="password" sql-type="varchar(40)" length="40"/>
+        </property>
+        <property name="nickname">
+            <column name="nickname" sql-type="varchar(20)" length="20"/>
+        </property>
+        <property name="balance">
+            <column name="balance" sql-type="float"/>
+        </property>
+        <property name="height">
+            <column name="height" sql-type="float"/>
+        </property>
+        <property name="weight">
+            <column name="weight" sql-type="float"/>
+        </property>
+        <property name="gender">
+            <column name="gender" sql-type="bit"/>
+        </property>
+        <property name="phone">
+            <column name="phone" sql-type="varchar(20)" length="20"/>
+        </property>
+        <property name="def_address">
+            <column name="def_address" sql-type="int"/>
+        </property>
+        <map name="addresses" table="address" inverse="true" cascade="all" lazy="false">
+            <key column="account"/>
+            <index column="id" type="java.lang.Integer"/>
+            <one-to-many class="Data.po.User.Address"/>
+        </map>
+        <!--        <set name="addresses" inverse="true" cascade="all" lazy="false">-->
+        <!--            <key column="account"/>-->
+        <!--            <one-to-many class="Data.po.User.Address"/>-->
+        <!--        </set>-->
+        <!--        <set name="shoppingCart" inverse="true" cascade="all" lazy="false" >-->
+        <!--            <key column="account"/>-->
+        <!--            <one-to-many class="Data.po.goods.Dishes"/>-->
+        <!--        </set>-->
+        <map name="shoppingCart" table="shopping_cart" inverse="true" cascade="none" lazy="false">
+            <key column="account"/>
+            <index column="cart_id" type="java.lang.Integer"/>
+            <one-to-many class="Data.po.goods.Dishes"/>
+        </map>
+        <!--        <set name="orders" inverse="true" cascade="all" lazy="false">-->
+        <!--            <key column="customer"/>-->
+        <!--            <one-to-many class="Data.po.goods.Order"/>-->
+        <!--        </set>-->
+        <map name="orders"  cascade="all" lazy="false" table="order_" inverse="true">
+            <key column="customer"/>
+            <index column="id" type="java.lang.String"/>
+            <one-to-many class="Data.po.goods.Order"/>
+        </map>
+        <map name="nutritionIntakeMap" cascade="none" lazy="false" table="nutrition_intake" inverse="true">
+            <key column="cusID"/>
+            <index column="time" type="java.lang.String"/>
+            <one-to-many class="Data.po.nutrition.NutritionIntake"/>
+        </map>
+
+    </class>
+</hibernate-mapping>

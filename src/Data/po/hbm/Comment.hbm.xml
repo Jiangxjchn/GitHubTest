@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="Data.po.goods.Comment" table="comment" schema="dbo" catalog="restaurant">
+        <id name="id">
+            <column name="id" sql-type="int"/>
+            <generator class="identity"/>
+        </id>
+        <property name="detail">
+            <column name="detail" sql-type="varchar(100)" length="100" />
+        </property>
+         <property name="customer">
+            <column name="customer" sql-type="varchar(20)" length="20" />
+        </property>
+        <many-to-one name="dish" class="Data.po.goods.Dish" fetch="select" not-null="true"  lazy="false">
+            <column name="dishID"/>
+        </many-to-one>
+        <property name="type">
+            <column name="type" sql-type="int"  />
+        </property>
+    </class>
+</hibernate-mapping>

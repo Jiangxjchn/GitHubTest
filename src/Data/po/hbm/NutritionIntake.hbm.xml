@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="Data.po.nutrition.NutritionIntake" table="nutrition_intake" schema="dbo" catalog="restaurant">
+        <id name="id">
+            <column name="id" sql-type="int"/>
+            <generator class="native"/>
+        </id>
+        <property name="time">
+            <column name="time" sql-type="varchar(10)" length="10"/>
+        </property>
+        <property name="calorie">
+            <column name="calorie" sql-type="float" precision="-1" not-null="true"/>
+        </property>
+        <property name="fat">
+            <column name="fat" sql-type="float" precision="-1" not-null="true"/>
+        </property>
+        <property name="df">
+            <column name="DF" sql-type="float" precision="-1" not-null="true"/>
+        </property>
+        <property name="protein">
+            <column name="protein" sql-type="float" precision="-1" not-null="true"/>
+        </property>
+        <property name="na">
+            <column name="Na" sql-type="float" precision="-1" not-null="true"/>
+        </property>
+        <property name="sugar">
+            <column name="sugar" sql-type="float" precision="-1" not-null="true"/>
+        </property>
+        <property name="custID">
+            <column name="cusID" sql-type="varchar(20)"/>
+        </property>
+        <map name="nutritionIntakeDetailMap" cascade="all" lazy="false" table="nutrition_intake_detail">
+            <key column="intakeID" />
+            <index column="id" type="java.lang.Integer"/>
+            <one-to-many class="Data.po.nutrition.NutritionIntakeDetail"/>
+        </map>
+<!--        <set name="userDefinedNutritionMap" table="nutrition_intake_detail">-->
+<!--            <key column="intakeID"/>-->
+<!--            <one-to-many class="Data.po.nutrition.NutritionIntakeDetail"/>-->
+<!--        </set>-->
+        <map name="userDefinedNutritionMap" cascade="all" lazy="false" table="user_defined_nutrition" >
+            <key column="intakeID"/>
+            <index column="id" type="java.lang.Integer"/>
+            <one-to-many class="Data.po.nutrition.UserDefinedNutrition" />
+        </map>
+    </class>
+</hibernate-mapping>

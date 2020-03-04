@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="Data.po.User.BaseUser" table="Customer" schema="dbo" catalog="restaurant">
+        <id name="account">
+            <column name="account" sql-type="varchar(20)" length="20"/>
+        </id>
+        <property name="password">
+            <column name="password" sql-type="varchar(40)" length="40"/>
+        </property>
+    </class>
+</hibernate-mapping>

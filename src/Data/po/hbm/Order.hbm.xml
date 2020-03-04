@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="Data.po.goods.Order" table="order_" schema="dbo" catalog="restaurant">
+        <id name="id">
+            <column name="id" sql-type="varchar(40)" length="40" />
+        </id>
+        <property name="time">
+            <column name="time" sql-type="datetime" />
+        </property>
+        <property name="price">
+            <column name="price" sql-type="float"  />
+        </property>
+        <property name="account">
+            <column name="customer" sql-type="varchar(20)" length="20" />
+        </property>
+        <property name="deliveryman">
+            <column name="deliveryman" sql-type="varchar(20)" length="20" />
+        </property>
+        <property name="finished">
+            <column name="finished" sql-type="bit"/>
+        </property>
+        <property name="addressId">
+            <column name="addressId" sql-type="int"/>
+        </property>
+        <!--        <set name="orderDetails" lazy="false" cascade="all" inverse="true">-->
+        <!--            <key column="orderID" />-->
+        <!--            <one-to-many class="Data.po.goods.OrderDetail" />-->
+        <!--        </set>-->
+        <map name="orderDetails" lazy="false" table="orderDetail" cascade="all" inverse="false">
+            <key column="orderID"/>
+            <index column="Detail_id" type="java.lang.String"/>
+            <one-to-many class="Data.po.goods.OrderDetail"/>
+        </map>
+    </class>
+</hibernate-mapping>

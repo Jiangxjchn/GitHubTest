@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <constant name="struts.ui.theme" value="simple" />
+    <constant name="struts.ui.templateDir" value="template" />
+    <constant name="struts.ui.templateSuffix" value="ftl" />
+    <constant name="struts.devMode" value="true"/>
+    <package name="login" namespace="/" extends="struts-default">
+        <global-results>
+            <result name="exception" type="redirect">/404/error_page.jsp</result>  <!--注意不要加入type="redirect"，会重定向-->
+        </global-results>
+        <global-exception-mappings>
+            <exception-mapping result="exception" exception="java.lang.Exception"/>
+        </global-exception-mappings>
+
+        <action name="login" class="customerAction" method="login">
+            <result name="fail" type="redirect">/customer/login.jsp</result>
+            <result name="success" type="redirect">/customer/index.jsp</result>
+        </action>
+        <action name="orderdishes" class="customerAction" method="orderDishes">
+            <result name="success" type="redirect">/customer/index.jsp</result>
+            <result name="dontChooseDishes" type="redirect">/customer/index.jsp</result>
+        </action>
+        <action name="placeanorder" class="customerAction" method="placeAnOrder">
+            <result name="success" type="redirect">/customer/index.jsp</result>
+            <result name="moneyNotEnough" type="redirect">/customer/index.jsp?tip=1</result>
+            <result name="dishNotEnough" type="redirect">/customer/index.jsp?tip=2</result>
+            <result name="dontChooseDishes" type="redirect">/customer/index.jsp</result>
+        </action>
+        <action name="alterInfo" class="customerAction" method="alterInfo">
+            <result name="success" type="redirect">/customer/index.jsp#about</result>
+            <result name="fail" type="redirect">/customer/index.jsp#about</result>
+        </action>
+        <action name="alterNutritionIntakeDetail" class="nutritionAction" method="alterNutritionIntakeDetail">
+            <result name="success" type="redirect">/customer/index.jsp#about</result>
+            <result name="fail" type="redirect">/customer/login.jsp</result>
+        </action>
+        <action name="updUserDefine" class="userDefNutAction" method="updUserDefine" >
+            <result name="success" type="redirect">/customer/index.jsp#about</result>
+            <result name="fail" type="redirect">/customer/index.jsp#about</result>
+        </action>
+        <action name="delUserDefine" class="userDefNutAction" method="delUserDefine" >
+            <result name="success" type="redirect">/customer/index.jsp#about</result>
+            <result name="fail" type="redirect">/customer/index.jsp#about</result>
+        </action>
+        <action name="addUserDefine" class="userDefNutAction" method="addUserDefine" >
+            <result name="success" type="redirect">/customer/index.jsp#about</result>
+            <result name="fail" type="redirect">/customer/index.jsp#about</result>
+        </action>
+        <action name="changeMenu" class="adminAction" method="changeMenu">
+            <result name="fail" >/admin/home.jsp</result>
+            <result name="success">/admin/home.jsp</result>
+        </action>
+        <action name="addDish" class="adminAction" method="addDish" >
+            <result name="fail">/admin/home.jsp</result>
+            <result name="success">/admin/home.jsp</result>
+        </action>
+        <action name="delDish" class="adminAction" method="delDish">
+            <result name="fail">/admin/home.jsp</result>
+            <result name="success">/admin/home.jsp</result>
+        </action>
+        <action name="setDish" class="adminAction" method="setDish">
+            <result name="fail">/admin/home.jsp</result>
+            <result name="success">/admin/home.jsp</result>
+        </action>
+        <action name="alogin" class="adminAction" method="login">
+            <result name="fail">/admin/home.jsp</result>
+            <result name="success" type="redirect">/admin/home.jsp</result>
+        </action>
+        <action name="topupMoney" class="customerAction" method="topupMoney">
+            <result name="success" type="redirect">/customer/index.jsp#about</result>
+            <result name="fail" type="redirect">/customer/index.jsp#about</result>
+        </action>
+        <action name="findTopupById" class="customerAction" method="findTopupById">
+            <result name="success" >/customer/topuplist.jsp</result>
+        </action>
+        <action name="findTopup" class="customerAction" method="findTopup">
+            <result name="success">/customer/topuplist.jsp</result>
+        </action>
+        <action name="ShowComment" class="customerAction" method="ShowComment">
+            <result name="success" type="redirect">/customer/index.jsp#portfolio</result>
+            <result name="fail" type="redirect">/customer/index.jsp#portfolio</result>
+        </action>
+
+        <action name="Dishsort1" class="customerAction" method="Dishsort1">
+            <result name="success" type="redirect">/customer/index.jsp#portfolio
+            </result>
+            <result name="fail" type="redirect">/customer/index.jsp#portfolio
+            </result>
+        </action>
+        <action name="Dishsort2" class="customerAction" method="Dishsort2">
+            <result name="success" type="redirect">/customer/index.jsp#portfolio
+            </result>
+            <result name="fail" type="redirect">/customer/index.jsp#portfolio
+            </result>
+        </action>
+    </package>
+    <package name="error" extends="struts-default">
+        <default-action-ref name="notFound" />
+        <action name="notFound">
+            <result type="redirect">/404/error_page.jsp</result>
+        </action>
+    </package>
+</struts>

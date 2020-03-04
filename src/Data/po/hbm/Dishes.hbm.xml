@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="Data.po.goods.Dishes" table="shopping_cart" schema="dbo" catalog="restaurant">
+        <!--        <composite-id name="pk" class="Data.po.goods.CID_DID_PK">-->
+        <!--            <key-property name="account" column="account" type="java.lang.String"/>-->
+        <!--            <key-property name="dishID" column="dish_id" type="java.lang.Integer"/>-->
+        <!--        </composite-id>-->
+        <id name="cartId" >
+            <column name="cart_id" sql-type="int" />
+            <generator class="native"/>
+        </id>
+        <property name="dishId" >
+            <column name="dish_id" sql-type="int"/>
+        </property>
+        <property name="num">
+            <column name="num" sql-type="int"/>
+        </property>
+        <property name="account">
+            <column name="account" sql-type="varchar" length="20"/>
+        </property>
+        <many-to-one name="customer" class="Data.po.User.Customer" fetch="select" lazy="false" insert="false" update="false" cascade="none">
+            <column name="account" />
+        </many-to-one>
+        <!--        <set name="dish" table="dish" >-->
+        <!--            <key column="id" property-ref="dishId"/>-->
+        <!--            <one-to-many class="Data.po.goods.Dish" />-->
+        <!--        </set>-->
+        <!--        <one-to-one name="dish" class="Data.po.goods.Dish" cascade="none" />-->
+        <many-to-one name="dish" unique="true" insert="false" update="false" lazy="false" cascade="none">
+            <column name="dish_id"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

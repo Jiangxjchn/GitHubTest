@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="Data.po.goods.Dish" table="dish" schema="dbo" catalog="restaurant">
+        <id name="id">
+            <column name="id" sql-type="int" />
+            <generator class="native"/>
+        </id>
+        <property name="name">
+            <column name="name" sql-type="varchar(20)" length="20" />
+        </property>
+        <property name="calorie">
+            <column name="calorie" sql-type="float" />
+        </property>
+        <property name="fat">
+            <column name="fat" sql-type="float"  />
+        </property>
+        <property name="sugar">
+            <column name="sugar" sql-type="float" />
+        </property>
+        <property name="df">
+            <column name="DF" sql-type="float" />
+        </property>
+        <property name="protein">
+            <column name="protein" sql-type="float" />
+        </property>
+        <property name="na">
+            <column name="Na" sql-type="float"  />
+        </property>
+        <property name="salesNum">
+            <column name="sales_num" sql-type="int" />
+        </property>
+        <property name="applauseRate">
+            <column name="applause_rate" sql-type="float" />
+        </property>
+        <property name="image">
+            <column name="image" sql-type="varchar(20)" length="20"/>
+        </property>
+        <property name="price">
+            <column name="price" sql-type="float"/>
+        </property>
+        <property name="weight">
+            <column name="weight" sql-type="int"/>
+        </property>
+        <property name="type">
+            <column name="type" sql-type="varchar(10)" length="10"/>
+        </property>
+        <many-to-one name="dishes" unique="true" insert="false" update="false">
+            <column name="id"/>
+        </many-to-one>
+        <many-to-one name="dishInMenu" unique="true" update="false" insert="false" lazy="false">
+            <column name="id"/>
+        </many-to-one>
+        <set name="comments" lazy="false" cascade="save-update" table="comment">
+            <key column="dishID" />
+            <one-to-many class="Data.po.goods.Comment" />
+        </set>
+        <property name="goodRate">
+            <column name="good_rate" sql-type="int"/>
+        </property>
+        <!--        <one-to-one name="dishInMenu" class="Data.po.goods.DishInMenu"/>-->
+        <!--        <many-to-one name="dishes" unique="true" insert="false" update="false">-->
+        <!--            <column name="id"/>-->
+        <!--        </many-to-one>-->
+        <!--        <one-to-one name="dishes" class="Data.po.goods.Dishes" property-ref="dishId"/>-->
+    </class>
+</hibernate-mapping>

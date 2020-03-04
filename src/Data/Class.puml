@@ -1,0 +1,93 @@
+@startuml
+package "Data"{
+package "Data.po"{
+package "Data.po.User"{
+        class staff
+        class Customer
+        class BaseUser
+        interface IUser
+        class Address{
+            + int id;
+            + String address;
+        }
+        IUser <|..BaseUser
+        BaseUser <|-- Customer
+        BaseUser <|-- staff
+        Address<..Customer
+    }
+    package "Data.po.goods"{
+        class “Dish”
+        class DishInMenu
+        class Order
+        class OrderDetail
+        class “Dishes”
+        OrderDetail <..Order
+        “Dishes”<.OrderDetail
+        Dish<..“Dishes”
+        DishInMenu <.."Dish"
+    }
+    "Order"<.."Customer"
+    "Dishes"<.."Customer"
+}
+    package "Data.DAO" #green{
+        class BaseDAO{
+            +SessionFactory sessionFactory
+            -Session getSession()
+            -void setSessionFactory(SessionFactory sessionFactory)
+        }
+        class "DishDAO"
+        class "DishesDAO"
+        class "DishInMenuDAO"
+        class "OrderDAO"
+        class "StaffDAO"
+        class "UserDefNutDAO"
+        interface InterfaceDAO{
+            boolean update(T o);
+            boolean delete(T o);
+            boolean save(T o);
+        }
+        InterfaceDAO<|..."DishDAO"
+        InterfaceDAO<|.."StaffDAO"
+        InterfaceDAO<|.."CustomerDAO"
+        InterfaceDAO<|.."DishesDAO"
+        InterfaceDAO<|.."DishInMenuDAO"
+        InterfaceDAO<|.."OrderDAO"
+        InterfaceDAO<|.."UserDefNutDAO"
+        BaseDAO<|--"CustomerDAO"
+        BaseDAO<|--"StaffDAO"
+        BaseDAO<|--"DishesDAO"
+        BaseDAO<|--"DishInMenuDAO"
+        BaseDAO<|--"OrderDAO"
+        BaseDAO<|--"UserDefNutDAO"
+        BaseDAO<|--  "DishDAO"
+    }
+}
+
+
+
+package "Service"{
+class CustomerService
+interface IUserService
+IUserService<|..AdminService
+IUserService<|..CustomerService
+IUserService<|..UserDefNutService
+}
+
+CustomerService <.."DishesDAO"
+CustomerService <.. CustomerDAO
+CustomerService <.. OrderDAO
+CustomerService <.. DishDAO
+CustomerService <.."DishInMenu"
+
+package "Action"{
+    class AdminAction
+    class CustomerAction
+    class NutritionAction
+    class UserDefNuAction
+}
+CustomerAction <.. CustomerService
+CustomerAction <.. Customer
+CustomerAction <.."Dish"
+
+
+@enduml

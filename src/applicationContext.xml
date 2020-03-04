@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-4.0.xsd"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx">
+    <aop:aspectj-autoproxy/>
+    <bean id="transactionManger" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <tx:advice id="txAdvice" transaction-manager="transactionManger">
+        <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="del*" propagation="REQUIRED"/>
+            <tx:method name="orderDishes" propagation="REQUIRED"/>
+            <tx:method name="alter*" propagation="REQUIRED"/>
+            <tx:method name="getAll*" propagation="REQUIRED"/>
+            <tx:method name="PlaceAnOrder" />
+            <tx:method name="*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config proxy-target-class="true">
+        <aop:pointcut id="allServiceMethod"
+                      expression="execution( * Service.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="allServiceMethod"/>
+    </aop:config>
+    <!--    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">-->
+    <!--        <property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>-->
+    <!--        <property name="jdbcUrl" value="jdbc:sqlserver://47.100.166.217:1433;database=restaurant"/>-->
+    <!--        <property name="user" value="javaee"/>-->
+    <!--        <property name="password" value="Program1"/>-->
+    <!--        <property name="initialPoolSize" value="5"/>-->
+    <!--        <property name="maxPoolSize" value="10"/>-->
+    <!--        <property name="minPoolSize" value="5"/>-->
+    <!--        <property name="loginTimeout" value="1800"/>-->
+    <!--        <property name="maxStatements" value="50"/>-->
+    <!--    </bean>-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+        <property name="url" value="jdbc:sqlserver://47.100.166.217:1433;database=restaurant"/>
+        <property name="username" value="javaee"/>
+        <property name="password" value="Program1"/>
+        <property name="catalog" value="restaurant"/>
+    </bean>
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.default_catalog">restaurant</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.use_sql_comments">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">validate</prop>
+                <prop key="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+                <prop key="hibernate.connection.url">jdbc:sqlserver://47.100.166.217:1433</prop>
+            </props>
+        </property>
+        <!--映射文件-->
+        <property name="mappingResources">
+            <list>
+                <value>Data/po/hbm/BaseUser.hbm.xml</value>
+                <value>Data/po/hbm/Customer.hbm.xml</value>
+                <value>Data/po/hbm/Dishes.hbm.xml</value>
+                <value>Data/po/hbm/Dish.hbm.xml</value>
+                <value>Data/po/hbm/Address.hbm.xml</value>
+                <value>Data/po/hbm/Order.hbm.xml</value>
+                <value>Data/po/hbm/OrderDetail.hbm.xml</value>
+                <value>Data/po/hbm/DishInMenu.hbm.xml</value>
+                <value>Data/po/hbm/NutritionIntake.hbm.xml</value>
+                <value>Data/po/hbm/NutritionIntakeDetail.hbm.xml</value>
+                <value>Data/po/hbm/UserDefinedNutrition.hbm.xml</value>
+                <value>Data/po/hbm/Staff.hbm.xml</value>
+                <value>Data/po/hbm/Menu.hbm.xml</value>
+                <value>Data/po/hbm/Comment.hbm.xml</value>
+                <value>Data/po/hbm/TopupDetail.hbm.xml</value>
+            </list>
+        </property>
+    </bean>
+    <!--Aspect-->
+    <bean id="testAspect" class="Aspect.TestAspect"/>
+    <bean class="Aspect.MoneyNotEnoughException"/>
+    <bean class="Aspect.ThingNotEnoughAspect"/>
+    <!--Bean-->
+    <bean id="pk" class="Data.po.goods.CID_DID_PK"/>
+    <bean id="dishInMenu" class="Data.po.goods.DishInMenu"/>
+    <bean id="dish" class="Data.po.goods.Dish"/>
+    <bean id="comment" class="Data.po.goods.Comment"/>
+    <bean id="dishes" class="Data.po.goods.Dishes"/>
+    <bean id="order" class="Data.po.goods.Order"/>
+    <bean id="address" class="Data.po.User.Address"/>
+    <bean id="baseUser" class="Data.po.User.BaseUser"/>
+    <bean id="customer" class="Data.po.User.Customer" parent="baseUser" />
+    <bean id="orderDetail" class="Data.po.goods.OrderDetail"/>
+    <bean class="Data.po.nutrition.NutritionIntake"/>
+    <bean class="Data.po.nutrition.NutritionIntakeDetail" />
+    <bean class="Data.po.nutrition.UserDefinedNutrition"/>
+    <bean class="SpringContext.SpringMain" id="springMain" factory-method="newOrderDetail"/>
+    <bean id="staff" class="Data.po.User.Staff"/>
+    <bean id="menu" class="Data.po.goods.Menu"/>
+    <bean class="Aspect.DishNotEnoughException"/>
+    <bean id="topupDetail" class="Data.po.User.TopupDetail"/>
+    <!--DAO-->
+
+    <bean id="baseDAO" class="Data.DAO.BaseDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="customerDAO" class="Data.DAO.CustomerDAO" parent="baseDAO"/>
+    <bean id="dishDAO" class="Data.DAO.DishDAO" parent="baseDAO"/>
+    <bean id="dishesDAO" class="Data.DAO.DishesDAO" parent="baseDAO"/>
+    <bean id="dishInMenuDAO" class="Data.DAO.DishInMenuDAO" parent="baseDAO"/>
+    <bean id="orderDAO" class="Data.DAO.OrderDAO" parent="baseDAO"/>
+    <bean id="userDefNutDAO" class="Data.DAO.UserDefNutDAO" parent="baseDAO"/>
+    <bean id="staffDAO" class="Data.DAO.StaffDao" parent="baseDAO"/>
+    <bean id="nutritionIntakeDAO" class="Data.DAO.NutritionIntakeDAO" parent="baseDAO"/>
+    <bean id="intakeDetailDAO" class="Data.DAO.IntakeDetailDAO" parent="baseDAO"/>
+    <bean id="topupDAO" class="Data.DAO.TopupDao" parent="baseDAO"/>
+    <!--Service-->
+    <bean id="customerService" class="Service.CustomerService">
+        <property name="customerDAO" ref="customerDAO"/>
+        <property name="dishDAO" ref="dishDAO"/>
+        <property name="dishesDAO" ref="dishesDAO"/>
+        <property name="orderDetail" ref="orderDetail"/>
+        <property name="order" ref="order"/>
+        <property name="nutritionIntakeDAO" ref="nutritionIntakeDAO"/>
+        <property name="intakeDetailDAO" ref="intakeDetailDAO"/>
+        <property name="shoppingCart">
+            <map key-type="java.lang.Integer" value-type="Data.po.goods.Dishes"/>
+        </property>
+        <property name="ordersDetails">
+            <map key-type="java.lang.String" value-type="Data.po.goods.OrderDetail"/>
+        </property>
+        <property name="springMain" ref="springMain"/>
+        <property name="dishInMenuDAO" ref="dishInMenuDAO"/>
+        <property name="orderDAO" ref="orderDAO"/>
+    </bean>
+    <bean id="topupService" class="Service.TopupService">
+        <property name="topupDAO" ref="topupDAO"/>
+    </bean>
+    <bean id="userDefNutService" class="Service.UserDefNutService">
+        <property name="userDefNutDAO" ref="userDefNutDAO"/>
+        <property name="nutritionIntakeDAO" ref="nutritionIntakeDAO"/>
+        <property name="intakeDetailDAO" ref="intakeDetailDAO"/>
+    </bean>
+    <bean id="adminService" class="Service.AdminService" >
+        <property name="staffDAO" ref="staffDAO"/>
+        <property name="dishDAO" ref="dishDAO"/>
+        <property name="menus">
+            <list value-type="Data.po.goods.Menu"/>
+        </property>
+        <property name="menu" ref="menu"/>
+    </bean>
+    <!--Action-->
+    <bean id="customerAction" class="Action.CustomerAction" scope="prototype">
+        <property name="customerService" ref="customerService"/>
+        <property name="customer" ref="customer"/>
+        <property name="dishes" ref="dishes"/>
+        <property name="dish" ref="dish"/>
+        <property name="comment" ref="comment"/>
+        <property name="topupdetail" ref="topupDetail"/>
+        <property name="topupService" ref="topupService"/>
+    </bean>
+    <bean id="nutritionAction" class="Action.NutritionAction" scope="prototype">
+        <property name="userDefNutService" ref="userDefNutService"/>
+    </bean>
+    <bean id="userDefNutAction" class="Action.UserDefNutAction" scope="prototype">
+        <property name="userDefNutService" ref="userDefNutService"/>
+    </bean>
+    <bean id="adminAction" class="Action.AdminAction" scope="prototype">
+        <property name="adminService" ref="adminService"/>
+        <property name="staff" ref="staff"/>
+        <property name="dish" ref="dish"/>
+    </bean>
+</beans>

@@ -1,0 +1,33 @@
+package filters;
+
+import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+
+@WebFilter(filterName = "LoginFilter")
+public class LoginFilter implements javax.servlet.Filter {
+    public void destroy() {
+    }
+
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
+        HttpServletRequest request=(HttpServletRequest)req;
+        HttpServletResponse response=(HttpServletResponse)resp;
+        HttpSession session=request.getSession();
+        if(session.getAttribute("customer")==null&&!request.getRequestURI().contains("login.jsp")&&request.getRequestURI().contains("customer")){
+            response.sendRedirect("/Catering/customer/login.jsp");
+            return;
+        }else if(session.getAttribute("staff")==null&& !request.getRequestURI().contains("login.jsp")&&request.getRequestURI().contains("admin")){
+            response.sendRedirect("/Catering/admin/login.jsp");
+            return;
+        }
+        chain.doFilter(req, resp);
+    }
+
+    public void init(FilterConfig config) throws ServletException {
+
+    }
+
+}
