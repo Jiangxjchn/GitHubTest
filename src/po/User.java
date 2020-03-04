@@ -3,15 +3,15 @@ package po;
 import java.util.Date;
 
 public class User {
-    private String user;
+    private String name;
     private Date birth;
 
-    public String getUser() {
-        return user;
+    public String getName() {
+        return name;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Date getBirth() {
